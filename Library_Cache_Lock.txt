@@ -1,0 +1,57 @@
+select sql_id,to_char(SAMPLE_TIME,'YYYYMMDD-HH24:MI:SS'),
+       INSTANCE_NUMBER,SESSION_ID,PROGRAM,MODULE,EVENT,
+       CURRENT_OBJ#,WAIT_CLASS,BLOCKING_INST_ID,
+       BLOCKING_SESSION, p3
+from dba_hist_active_sess_history
+where
+sample_time between to_date('02-12-22 12:00:00','DD-MM-YY HH24:MI:SS')
+and to_date('02-12-22 13:00:00','DD-MM-YY HH24:MI:SS')
+and event ='library cache lock'
+order by sample_id;
+
+
+
+select sql_id,to_char(SAMPLE_TIME,'YYYYMMDD-HH24:MI:SS'),
+       INSTANCE_NUMBER,SESSION_ID,PROGRAM,MODULE,EVENT,
+       CURRENT_OBJ#,WAIT_CLASS,BLOCKING_INST_ID,
+       BLOCKING_SESSION, p3
+from dba_hist_active_sess_history
+where
+sample_time between to_date('10-10-22 14:40:00','DD-MM-YY HH24:MI:SS')
+and to_date('10-10-22 15:05:00','DD-MM-YY HH24:MI:SS')
+and session_id = 6431 AND instance_number = 1
+order by sample_id;
+
+session id 3576 / bloking session 6431
+
+6431 --> Oracle REST Data Services  --> 5rkzhr51g894h
+
+3576 --> admin connectio --> 4a7btag2vx0nk
+
+SELECT * FROM dba_objects WHERE OBJECT_ID = 96876
+
+
+
+COL SQL_FULLTEXT FOR A160
+SET LONG 9999
+SELECT SQL_FULLTEXT FROM V$SQLSTATS WHERE SQL_ID = '4a7btag2vx0nk';
+
+
+
+Top Sessions
+
+
+Sid, Serial#	% Activity	Event	% Event	User	Program	# Samples Active	XIDs
+4662,37201	3.47	CPU + Wait for CPU	3.47	SYS	JDBC Thin Client	361/362 [100%]	0
+6077,26544	3.47	CPU + Wait for CPU	3.47	SYS	JDBC Thin Client	361/362 [100%]	0
+7026,40515	1.60	CPU + Wait for CPU	1.52	UserID: 1183	oracle@base-da3 (TNS V1-V3)	158/362 [ 44%]	1
+716,49496	1.54	CPU + Wait for CPU	1.54	UserID: 119	STANDARD@base-...n (TNS V1-V3)	160/362 [ 44%]	129
+6431,40101	1.42	library cache pin	1.41	UserID: 5	Oracle REST Data Services	147/362 [ 41%]	1
+
+
+
+Top Blocking Sessions
+
+Blocking Sid (Inst)	% Activity	Event Caused	% Event	User	Program	# Samples Active	XIDs
+6431,40101( 1)	63.54	library cache pin	62.73	UserID: 5	Oracle REST Data Services	148/362 [ 41%]	1
+7381,46645( 1)	2.78	library cache pin	2.78	UserID: 5	Oracle REST Data Services	10/362 [ 3%]	1
